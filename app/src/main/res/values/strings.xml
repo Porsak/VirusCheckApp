@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Virus Check</string>
+    <string name="todo">TODO</string>
+    <string name="virus_check">Virus Check</string>
+    <string name="welcomepageicon">welcomePageIcon</string>
+    <string name="textview">TextView</string>
+    <string name="bio">
+\nCheck your files in phone for malware contains.
+\n\nYou can easily use this application to upload a file from your phone and compare with database knowable malware signatures.
+\n\nOn next page click on Upload button and choose file from your phone which you want to check.
+\nThen click on Check button to compare your file hash fingerprint with database.\n
+    </string>
+    <string name="next">Next</string>
+</resources>
