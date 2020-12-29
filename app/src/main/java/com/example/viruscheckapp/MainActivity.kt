@@ -13,12 +13,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "onCreate");
+    }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "onResume")
     }
 
     fun launchSecondActivity(view: View) {
-        Log.d(LOG_TAG, "Button clicked!");
         val intent = Intent(this, MainActivity2::class.java)
         startActivity(intent);
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "Button clicked!")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "onPause")
     }
 }
