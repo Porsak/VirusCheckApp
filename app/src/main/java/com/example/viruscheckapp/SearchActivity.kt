@@ -10,13 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 
 private val LOG_TAG = MainActivity::class.java.simpleName
 
+
 class SearchActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        var showUrl = (TextView) findViewById (R.id.textView2);
     }
 
     override fun onStart() {
@@ -44,7 +44,8 @@ class SearchActivity : AppCompatActivity() {
 
         if (requestCode == 111 && resultCode == RESULT_OK) {
             val selectedFile = data?.data //The uri with the location of the file
-
+            val resultText: TextView = findViewById(R.id.textView2)
+            resultText.text = selectedFile.toString()
         }
     }
 
