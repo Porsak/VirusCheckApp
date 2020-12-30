@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 
-private val LOG_TAG = MainActivity::class.java.simpleName
+private val LOG_TAG = MainActivity2::class.java.simpleName
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
