@@ -15,8 +15,9 @@ Check your files in phone for malware contains.
     <string name="input">Input</string>
     <string name="new_search">New Search</string>
     <string name="investigate">Investigate</string>
-    <string name="url"></string>
     <string name="hash">Hash:</string>
     <string name="file_path">File path:</string>
     <string name="api_key">API Key:</string>
+    <string name="designed_by_prochazka">Designed by Prochazka</string>
+
 </resources>

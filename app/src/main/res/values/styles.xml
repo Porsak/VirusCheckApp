@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
+
     <style name="TextStyle">
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
         <item name="android:fontFamily">@font/roboto</item>
@@ -8,5 +10,11 @@
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
