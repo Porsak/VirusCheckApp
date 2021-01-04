@@ -46,28 +46,32 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
-        android:id="@+id/welcome_scroll"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="185dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/welcome_text"
-            style="@style/TextStyle"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="214dp">
+
+            <TextView
+                android:id="@+id/welcome_text"
+                style="@style/TextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bio"
+                android:textColor="#000000" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bio"
-            android:textColor="#000000" />
-    </ScrollView>
+            android:onClick="launchSecondActivity"
+            android:text="@string/next" />
 
-    <Button
-        android:id="@+id/button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="launchSecondActivity"
-        android:text="@string/next" />
+    </LinearLayout>
 
 </LinearLayout>

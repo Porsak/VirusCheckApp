@@ -1,19 +1,21 @@
 package com.example.viruscheckapp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.github.kittinunf.fuel.Fuel
+import java.io.File
 import java.io.FileInputStream
-import java.io.InputStream
-import java.security.MessageDigest
-import kotlin.experimental.and
-
+import java.io.IOException
 
 private val LOG_TAG = SearchActivity::class.java.simpleName
-private var url = ""
+private var HashSum = ""
+private var APIKey = ""
 
 class SearchActivity : AppCompatActivity() {
 
@@ -41,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
 
         startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
     }
-
+/*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -49,55 +51,56 @@ class SearchActivity : AppCompatActivity() {
             val selectedFile = data?.data //The uri with the location of the file
             val resultText: TextView = findViewById(R.id.textView2)
             resultText.text = selectedFile.toString()
-            url = selectedFile.toString()
+            DataPath = selectedFile.toString()
         }
     }
+*/
 
-    fun runHash(view: View) {
+    fun runAPISearch(view: View) {
         Log.d(LOG_TAG, "-------");
         Log.d(LOG_TAG, "Button clicked!")
-        Log.d(LOG_TAG, url)
-        fileToMD5(url)
+        Log.d(LOG_TAG, HashSum)
+
+        val text = findViewById<View>(R.id.editTextTextPersonName) as EditText
+        HashSum = text.text.toString()
+        val text2 = findViewById<View>(R.id.editTextTextPersonName2) as EditText
+        APIKey = text2.text.toString()
+
+        sendGet()
     }
 
-    private fun fileToMD5(filePath: String?): String? {
-        var inputStream: InputStream? = null
-        Log.d(LOG_TAG, "Hash start!")
-        return try {
-            inputStream = FileInputStream(filePath)
-            Log.d(LOG_TAG, inputStream.toString())
-            val buffer = ByteArray(1024)
-            val digest: MessageDigest = MessageDigest.getInstance("MD5")
-            var numRead = 0
-            while (numRead != -1) {
-                numRead = inputStream.read(buffer)
-                if (numRead > 0) digest.update(buffer, 0, numRead)
-            }
-            val md5Bytes: ByteArray = digest.digest()
-            Log.d(LOG_TAG, md5Bytes.toString())
-            convertHashToString(md5Bytes)
-        } catch (e: Exception) {
-            null
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close()
-                } catch (e: Exception) {
+    private fun sendGet(){
+        Fuel.get("https://www.virustotal.com/vtapi/v2/file/report?apikey=$APIKey&resource=$HashSum")
+            .response {
+                    request, response, result -> println(request)
+                println(response)
+                Log.d(LOG_TAG, response.toString())
+                val (bytes, error) = result
+                if (bytes != null) {
+                    println("[response bytes] ${String(bytes)}")
+                    var resultHash: TextView = findViewById(R.id.textView5)
+                    resultHash.text = response.toString()
                 }
             }
-        }
     }
 
-    private fun convertHashToString(md5Bytes: ByteArray): String? {
-        var returnVal = ""
-        for (i in md5Bytes.indices) {
-            returnVal += ((md5Bytes[i] and 0xff.toByte()) + 0x100).toString(16).substring(1)
-        }
-        var resultHash: TextView = findViewById(R.id.textView5)
-        resultHash.text = returnVal.toString().toUpperCase()
-        Log.d(LOG_TAG, returnVal.toString())
-        return returnVal.toUpperCase()
+/*
+    private fun sendPost() {
+        Fuel.post("https://www.virustotal.com/vtapi/v2/file/scan", listOf("apikey" to "$APIKey", "file" to "e3971e10ff61c633591999b2054e7593bfd2a7656b663a015df276a7691eab91"))
+
+                .response { request, response, result -> println(request)
+
+                    println(response)
+                    Log.d(LOG_TAG, response.toString())
+                    val (bytes, error) = result
+                    if (bytes != null) {
+                        println("[response bytes] ${String(bytes)}")
+                        var resultHash: TextView = findViewById(R.id.textView5)
+                        resultHash.text = response.toString()
+                    }
+                }
     }
+*/
 
     override fun onPause() {
         super.onPause()
