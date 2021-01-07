@@ -19,5 +19,7 @@ Check your files in phone for malware contains.
     <string name="file_path">File path:</string>
     <string name="api_key">API Key:</string>
     <string name="designed_by_prochazka">Designed by Prochazka</string>
+    <string name="name">Name:</string>
+    <string name="save">SAVE</string>
 
 </resources>

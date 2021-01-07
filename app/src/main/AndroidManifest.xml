@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".InvestigateActivity">
+        <activity android:name=".InvestigateActivity"
             android:parentActivityName=".MainActivity2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
