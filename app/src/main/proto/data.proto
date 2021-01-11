@@ -4,7 +4,10 @@ option java_package = "com.example.viruscheckapp";
 option java_multiple_files = true;
 
 message SearchObject {
-  string fileName = 1;
-  string hashFile = 2;
-
+  int32 id = 1;
+  string fileName = 2;
+  string hashFile = 3;
+}
+message FileBook {
+  repeated SearchObject files = 1;
 }

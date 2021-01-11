@@ -11,10 +11,15 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository = ProtoRepository(application)
 
-    val fileName = repository.readProto.asLiveData()
+    val iD = repository.readProto.asLiveData()
 
-    fun updateValue(fileName: String, hashFile: String) = viewModelScope.launch(Dispatchers.IO){
-        repository.updateValue(fileName, hashFile)
+    fun updateValue(id: Int, fileName: String, hashFile: String) = viewModelScope.launch(Dispatchers.IO){
+        repository.updateValue(id, fileName, hashFile)
     }
+
+    fun getValue(id: Int) = viewModelScope.launch(Dispatchers.IO){
+        repository.
+    }
+
 
 }

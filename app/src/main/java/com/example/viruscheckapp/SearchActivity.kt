@@ -22,6 +22,7 @@ private const val KEY_RESULT = "response"
 private const val KEY_HASH = "hash"
 private const val KEY_APIKEY = "apikey"
 private const val KEY_FILENAME = "filename"
+private var id = 1
 
 class SearchActivity : AppCompatActivity() {
 
@@ -37,9 +38,11 @@ class SearchActivity : AppCompatActivity() {
      /*************************************Save persistent data************************************/
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        /*mainViewModel.fileName.observe(this, {
+        mainViewModel.iD.observe(this, {
             fileNameSearch = it.fileName
-        })*/
+        })
+
+        mainViewModel.updateValue(id, fileNameSearch, HashSum)
 
         button4.setOnClickListener {
             fileNameChoose = fileNameSearch
@@ -49,10 +52,12 @@ class SearchActivity : AppCompatActivity() {
             Log.d(LOG_TAG, fileHashChoose)
 
             val fileName = editTextTextPersonName3.text.toString()
-            mainViewModel.updateValue(fileName, HashSum.toString())
-
-            /*var name: TextView = findViewById(R.id.textView13)
-            name.text = fileNameSearch*/
+            mainViewModel.updateValue(id, fileName, HashSum.toString())
+            id++
+            if(id == 5){
+                id=1
+            }
+            //var obj = InvestigateActivity().chooseName(HashSum)
 
         }
 
@@ -98,7 +103,7 @@ class SearchActivity : AppCompatActivity() {
 
     /*****************************************Run API request**************************************/
 
-    fun sendGet(Hash: String): String {
+    private fun sendGet(Hash: String): String {
         Fuel.get("https://www.virustotal.com/vtapi/v2/file/report?apikey=$APIKey&resource=$Hash")
             .response { request, response, result -> println(request)
                 println(response)

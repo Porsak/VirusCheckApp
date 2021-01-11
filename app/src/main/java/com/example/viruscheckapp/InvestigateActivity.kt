@@ -3,7 +3,10 @@ package com.example.viruscheckapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.github.kittinunf.fuel.Fuel
 import kotlinx.android.synthetic.main.activity_investigate.*
 
@@ -11,39 +14,37 @@ private val LOG_TAG = SearchActivity::class.java.simpleName
 var fileNameChoose = ""
 var fileHashChoose = ""
 var responseText = ""
+private var id = 0
 
 class InvestigateActivity : AppCompatActivity() {
 
-    //private lateinit var mainViewModel: MainViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_investigate)
 
-        /*val text: TextView = findViewById<EditText>(R.id.textView13)
-        text.text = fileNameChoose*/
+        val text: TextView = findViewById<EditText>(R.id.textView13)
+        text.text = fileNameChoose
 
-        /*mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mainViewModel.fileName.observe(this, {
-            textView9.text = resultMessage
-        })*/
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         button2.setOnClickListener {
 
-            Log.d(LOG_TAG, fileHashChoose)
+            /*Log.d(LOG_TAG, fileHashChoose)
             sendGet(fileHashChoose)
             val resultText: TextView = findViewById(R.id.textView9)
             resultText.text = responseText
 
-            Log.d(LOG_TAG, responseText)
-            /*val fileName = fileNameChoose
-            mainViewModel.updateValue(fileName, fileHashChoose)*/
+            Log.d(LOG_TAG, responseText)*/
+
+            Log.d(LOG_TAG, mainViewModel.getValue(id).toString())
 
         }
 
         textView13.setOnClickListener {
-            fileHashChoose
             Log.d(LOG_TAG, "Text view clicked")
+            id=1
         }
     }
 
@@ -55,10 +56,6 @@ class InvestigateActivity : AppCompatActivity() {
                 Log.d(LOG_TAG, responseText)
             }
     }
-
-    /*private fun chooseName(view: View){
-        fileHashChoose = textView.toString()
-    }*/
 
     override fun onPause() {
         super.onPause()
@@ -77,4 +74,5 @@ class InvestigateActivity : AppCompatActivity() {
         Log.d(LOG_TAG, "-------")
         Log.d(LOG_TAG, "onResume")
     }
+
 }
