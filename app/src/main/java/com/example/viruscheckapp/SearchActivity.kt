@@ -6,24 +6,26 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.github.kittinunf.fuel.Fuel
-import org.json.JSONObject
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
-
+import kotlinx.android.synthetic.main.activity_search.*
 
 private val LOG_TAG = SearchActivity::class.java.simpleName
+
+var fileNameSearch = ""
 private var HashSum = ""
-private var APIKey = ""
+var APIKey = ""
 
 private var ResponseText = ""
 
 private const val KEY_RESULT = "response"
 private const val KEY_HASH = "hash"
 private const val KEY_APIKEY = "apikey"
+private const val KEY_FILENAME = "filename"
 
 class SearchActivity : AppCompatActivity() {
+
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +33,36 @@ class SearchActivity : AppCompatActivity() {
 
         Log.d(LOG_TAG, "-------")
         Log.d(LOG_TAG, "onCreate")
+
+     /*************************************Save persistent data************************************/
+
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        /*mainViewModel.fileName.observe(this, {
+            fileNameSearch = it.fileName
+        })*/
+
+        button4.setOnClickListener {
+            fileNameChoose = fileNameSearch
+            fileHashChoose = HashSum
+
+            Log.d(LOG_TAG, fileNameChoose)
+            Log.d(LOG_TAG, fileHashChoose)
+
+            val fileName = editTextTextPersonName3.text.toString()
+            mainViewModel.updateValue(fileName, HashSum.toString())
+
+            /*var name: TextView = findViewById(R.id.textView13)
+            name.text = fileNameSearch*/
+
+        }
+
+    /****************************************Save user input***************************************/
+
         if (savedInstanceState != null) {
             ResponseText = savedInstanceState.getString(KEY_RESULT).toString()
             HashSum = savedInstanceState.getString(KEY_HASH).toString()
             APIKey = savedInstanceState.getString(KEY_APIKEY).toString()
+            fileNameSearch = savedInstanceState.getString(KEY_FILENAME).toString()
         }
 
         var resultHash: TextView = findViewById(R.id.textView5)
@@ -42,26 +70,36 @@ class SearchActivity : AppCompatActivity() {
 
         val text: TextView = findViewById<EditText>(R.id.editTextTextPersonName)
         text.text = HashSum
+
         val text2: TextView = findViewById<EditText>(R.id.editTextTextPersonName2)
         text2.text = APIKey
 
+        val text3: TextView = findViewById<EditText>(R.id.editTextTextPersonName3)
+        text3.text = fileNameSearch
+
     }
+    /****************************************Run API request***************************************/
 
     fun runAPISearch(view: View) {
         Log.d(LOG_TAG, "-------");
         Log.d(LOG_TAG, "Button clicked!")
-        Log.d(LOG_TAG, HashSum)
 
         val text = findViewById<View>(R.id.editTextTextPersonName) as EditText
         HashSum = text.text.toString()
+
         val text2 = findViewById<View>(R.id.editTextTextPersonName2) as EditText
         APIKey = text2.text.toString()
 
-        sendGet()
+        val text3: TextView = findViewById<EditText>(R.id.editTextTextPersonName3) as EditText
+        fileNameSearch = text3.text.toString()
+
+        sendGet(HashSum)
     }
 
-    private fun sendGet(){
-        Fuel.get("https://www.virustotal.com/vtapi/v2/file/report?apikey=$APIKey&resource=$HashSum")
+    /*****************************************Run API request**************************************/
+
+    fun sendGet(Hash: String): String {
+        Fuel.get("https://www.virustotal.com/vtapi/v2/file/report?apikey=$APIKey&resource=$Hash")
             .response { request, response, result -> println(request)
                 println(response)
 
@@ -78,15 +116,13 @@ class SearchActivity : AppCompatActivity() {
                 Log.d(LOG_TAG, "Response control")
                 ResponseText = response.toString()
 
-                var resultHash: TextView = findViewById(R.id.textView5)
-                resultHash.text = ResponseText
-
+                var resultText: TextView = findViewById(R.id.textView5)
+                resultText.text = ResponseText
             }
+        return ResponseText
     }
 
-    private fun saveToFile() {
-
-    }
+    /*****************************************Save layout state************************************/
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         if (savedInstanceState != null) {
@@ -97,14 +133,10 @@ class SearchActivity : AppCompatActivity() {
         savedInstanceState.putString(KEY_RESULT, ResponseText)
         savedInstanceState.putString(KEY_HASH, HashSum)
         savedInstanceState.putString(KEY_APIKEY, APIKey)
+        savedInstanceState.putString(KEY_FILENAME, fileNameSearch)
     }
 
-    fun runSaveToFile(view: View) {
-        Log.d(LOG_TAG, "-------");
-        Log.d(LOG_TAG, "Button clicked!")
-
-
-    }
+    /**********************************************************************************************/
 
     override fun onPause() {
         super.onPause()

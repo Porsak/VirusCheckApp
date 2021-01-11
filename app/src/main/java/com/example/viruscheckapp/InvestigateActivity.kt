@@ -3,28 +3,61 @@ package com.example.viruscheckapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import java.io.InputStream
-import java.io.OutputStream
+import android.widget.TextView
+import com.github.kittinunf.fuel.Fuel
+import kotlinx.android.synthetic.main.activity_investigate.*
 
 private val LOG_TAG = SearchActivity::class.java.simpleName
+var fileNameChoose = ""
+var fileHashChoose = ""
+var responseText = ""
 
 class InvestigateActivity : AppCompatActivity() {
+
+    //private lateinit var mainViewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_investigate)
-    }
-    /*
-    object UserPreferencesSerializer : Serializer<giveData> {
-        override val defaultValue: UserPreferences = giveData.getDefaultInstance()
-        override fun readFrom(input: InputStream): giveData {
-            try {
-                return giveData.parseFrom(input)
-            } catch (exception: InvalidProtocolBufferException) {
-                throw CorruptionException("Cannot read proto.", exception)
-            }
+
+        /*val text: TextView = findViewById<EditText>(R.id.textView13)
+        text.text = fileNameChoose*/
+
+        /*mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainViewModel.fileName.observe(this, {
+            textView9.text = resultMessage
+        })*/
+
+        button2.setOnClickListener {
+
+            Log.d(LOG_TAG, fileHashChoose)
+            sendGet(fileHashChoose)
+            val resultText: TextView = findViewById(R.id.textView9)
+            resultText.text = responseText
+
+            Log.d(LOG_TAG, responseText)
+            /*val fileName = fileNameChoose
+            mainViewModel.updateValue(fileName, fileHashChoose)*/
+
         }
 
-        override fun writeTo(t: UserPreferences, output: OutputStream) = t.writeTo(output)
+        textView13.setOnClickListener {
+            fileHashChoose
+            Log.d(LOG_TAG, "Text view clicked")
+        }
+    }
+
+    private fun sendGet(Hash: String) {
+        Fuel.get("https://www.virustotal.com/vtapi/v2/file/report?apikey=$APIKey&resource=$Hash")
+            .response { request, response, _ -> println(request)
+                responseText = response.toString()
+                Log.d(LOG_TAG, "Requested")
+                Log.d(LOG_TAG, responseText)
+            }
+    }
+
+    /*private fun chooseName(view: View){
+        fileHashChoose = textView.toString()
     }*/
 
     override fun onPause() {
