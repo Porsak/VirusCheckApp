@@ -66,8 +66,7 @@ class SearchActivity : AppCompatActivity() {
                 println(response)
 
                 Log.d(LOG_TAG, "1-------")
-                Log.d(LOG_TAG, response.toString())
-
+                //Log.d(LOG_TAG, response.toString())
 
                 val (bytes, error) = result
                 if (bytes != null) {
@@ -79,18 +78,16 @@ class SearchActivity : AppCompatActivity() {
                 Log.d(LOG_TAG, "Response control")
                 ResponseText = response.toString()
 
-                var ResultHash: TextView = findViewById(R.id.textView5)
-                ResultHash.text = ResponseText
+                var resultHash: TextView = findViewById(R.id.textView5)
+                resultHash.text = ResponseText
 
             }
     }
 
     private fun saveToFile() {
-        var formatResponseText = ResponseText
 
-        formatResponseText.toCharArray()
-        val file: File = formatResponseText
     }
+
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         if (savedInstanceState != null) {
             super.onSaveInstanceState(savedInstanceState)

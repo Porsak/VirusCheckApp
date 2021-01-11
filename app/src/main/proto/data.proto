@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "com.example.viruscheckapp";
+option java_multiple_files = true;
+
+message SearchRequest {
+  string scanner = 1;
+  bool detected = 2;
+  string result = 3;
+  int32 update = 4;
+
+}
