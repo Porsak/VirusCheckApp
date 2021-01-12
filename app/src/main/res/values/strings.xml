@@ -8,7 +8,7 @@
 Check your files in phone for malware contains.
 \n\nYou can easily use this application to upload a file from your phone and compare with database knowable malware signatures.
 \n\nOn next page click on Upload button and choose file from your phone which you want to check.
-\n\nThen click on Check button to compare your file hash fingerprint with database.\n
+\n\nThen click on Check button to compare your file hash fingerprint with database.
     </string>
     <string name="next">Next</string>
     <string name="search">Search</string>
