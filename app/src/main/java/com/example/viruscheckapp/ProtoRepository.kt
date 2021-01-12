@@ -25,12 +25,10 @@ class ProtoRepository(context: Context) {
             }
         }
 
-    suspend fun updateValue(id: Int, fileName: String, hashFile: String){
-        dataStore.updateData { preference->
-            preference.toBuilder().setId(id).setFileName(fileName).setHashFile(hashFile).build()
+    suspend fun updateValue(fileName: String, hashFile: String) {
+        dataStore.updateData { preference ->
+            preference.toBuilder().setFileName(fileName).setHashFile(hashFile).build()
         }
-
-
     }
 
 }

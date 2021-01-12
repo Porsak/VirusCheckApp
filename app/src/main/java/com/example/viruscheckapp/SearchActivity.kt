@@ -12,17 +12,15 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 private val LOG_TAG = SearchActivity::class.java.simpleName
 
-var fileNameSearch = ""
-private var HashSum = ""
-var APIKey = ""
-
-private var ResponseText = ""
-
 private const val KEY_RESULT = "response"
 private const val KEY_HASH = "hash"
 private const val KEY_APIKEY = "apikey"
 private const val KEY_FILENAME = "filename"
-private var id = 1
+
+private var fileNameSearch = ""
+private var HashSum = ""
+var APIKey = ""
+private var ResponseText = ""
 
 class SearchActivity : AppCompatActivity() {
 
@@ -38,27 +36,14 @@ class SearchActivity : AppCompatActivity() {
      /*************************************Save persistent data************************************/
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mainViewModel.iD.observe(this, {
-            fileNameSearch = it.fileName
-        })
-
-        mainViewModel.updateValue(id, fileNameSearch, HashSum)
 
         button4.setOnClickListener {
-            fileNameChoose = fileNameSearch
-            fileHashChoose = HashSum
-
-            Log.d(LOG_TAG, fileNameChoose)
-            Log.d(LOG_TAG, fileHashChoose)
-
             val fileName = editTextTextPersonName3.text.toString()
-            mainViewModel.updateValue(id, fileName, HashSum.toString())
-            id++
-            if(id == 5){
-                id=1
-            }
-            //var obj = InvestigateActivity().chooseName(HashSum)
+            val fileHash = editTextTextPersonName.text.toString()
+            mainViewModel.updateValue(fileName, fileHash)
 
+            fileNameChoose = fileName
+            fileHashChoose = fileHash
         }
 
     /****************************************Save user input***************************************/
@@ -89,13 +74,13 @@ class SearchActivity : AppCompatActivity() {
         Log.d(LOG_TAG, "-------");
         Log.d(LOG_TAG, "Button clicked!")
 
-        val text = findViewById<View>(R.id.editTextTextPersonName) as EditText
+        val text: TextView = findViewById<View>(R.id.editTextTextPersonName) as EditText
         HashSum = text.text.toString()
 
-        val text2 = findViewById<View>(R.id.editTextTextPersonName2) as EditText
+        val text2: TextView = findViewById<View>(R.id.editTextTextPersonName2) as EditText
         APIKey = text2.text.toString()
 
-        val text3: TextView = findViewById<EditText>(R.id.editTextTextPersonName3) as EditText
+        val text3: TextView = findViewById<View>(R.id.editTextTextPersonName3) as EditText
         fileNameSearch = text3.text.toString()
 
         sendGet(HashSum)
@@ -135,6 +120,19 @@ class SearchActivity : AppCompatActivity() {
         }
         Log.d(LOG_TAG, "-------")
         Log.d(LOG_TAG, "onSave")
+
+        val resultHash: TextView = findViewById(R.id.textView5)
+        ResponseText = resultHash.text.toString()
+
+        val text = findViewById<View>(R.id.editTextTextPersonName) as EditText
+        HashSum = text.text.toString()
+
+        val text2 = findViewById<View>(R.id.editTextTextPersonName2) as EditText
+        APIKey = text2.text.toString()
+
+        val text3: TextView = findViewById<EditText>(R.id.editTextTextPersonName3) as EditText
+        fileNameSearch = text3.text.toString()
+
         savedInstanceState.putString(KEY_RESULT, ResponseText)
         savedInstanceState.putString(KEY_HASH, HashSum)
         savedInstanceState.putString(KEY_APIKEY, APIKey)
@@ -161,35 +159,5 @@ class SearchActivity : AppCompatActivity() {
         Log.d(LOG_TAG, "onResume")
     }
 
- /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 111 && resultCode == RESULT_OK) {
-            val selectedFile = data?.data //The uri with the location of the file
-            val resultText: TextView = findViewById(R.id.textView2)
-            resultText.text = selectedFile.toString()
-            DataPath = selectedFile.toString()
-        }
-    }
-*/
-
-/*
-    private fun sendPost() {
-        Fuel.post("https://www.virustotal.com/vtapi/v2/file/scan", listOf("apikey" to "$APIKey", "file" to "e3971e10ff61c633591999b2054e7593bfd2a7656b663a015df276a7691eab91"))
-
-                .response { request, response, result -> println(request)
-
-                    println(response)
-                    Log.d(LOG_TAG, response.toString())
-                    val (bytes, error) = result
-                    if (bytes != null) {
-                        println("[response bytes] ${String(bytes)}")
-                        var resultHash: TextView = findViewById(R.id.textView5)
-                        resultHash.text = response.toString()
-                    }
-                }
-    }
-*/
 
 }
